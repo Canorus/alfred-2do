@@ -152,17 +152,26 @@ result = {"items": [
     {
         "title": "task",
         "subtitle": "Create new task with given data",
-        "arg": baseurl
+        "arg": baseurl,
+		"icon": {
+			"path":"icons/Normal.png"
+		}
     },
     {
         "title": "project",
         "subtitle": "Create new project with given data",
-        "arg": baseurl + "&type=1"
+        "arg": baseurl + "&type=1",
+		"icon": {
+			"path":"icons/Project.png"
+		}
     },
     {
         "title": "checklist",
         "subtitle": "Create new checklist with given data",
-        "arg": baseurl + "&type=2"
+        "arg": baseurl + "&type=2",
+		"icon": {
+			"path":"icons/Checklists.png"
+		}
     }
 ]}
 
