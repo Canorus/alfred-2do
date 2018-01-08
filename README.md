@@ -18,4 +18,4 @@ based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/t
 
 webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/fallroot/copy-url-for-alfred)
 
-[try at your own risk](/workflow/alfred-2do.alfredworkflow) and any suggestions/pull requests will be appreciated
+[try at your own risk](https://raw.githubusercontent.com/Canorus/alfred-2do/master/workflow/alfred-2do.alfredworkflow) and any suggestions/pull requests will be appreciated
