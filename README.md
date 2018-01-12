@@ -20,4 +20,4 @@ webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/
 
 [try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2do.alfredworkflow) and any suggestions/pull requests will be appreciated
 
-- [ ] only single tag is accepted; working on
+- [ ] only single tag is accepted; working on it
