@@ -18,7 +18,7 @@ based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/t
 
 webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/fallroot/copy-url-for-alfred)
 
-[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2do.alfredworkflow) and any suggestions/pull requests will be appreciated
+[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2do_1.0.alfredworkflow) and any suggestions/pull requests will be appreciated
 
 - [ ] only single tag is accepted; working on it
 - [x] ~~priority~~
