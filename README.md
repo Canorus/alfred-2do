@@ -5,7 +5,7 @@ Tried to mimic natural language to create a 2Do task.
 USAGE:
 
 ```
-2d event [[today][tomorrow] on [11][feb 11][11 feb 2018][wed][wednesday]] [at [9][9:30][pm]] [@[list]] [#[tag]] [[*][**][***]]
+2d event [[today][tomorrow] on [11][feb 11][11 feb 2018][wed][wednesday][2/11]] [at [9][9:30][pm]] [@[list]] [#[tag]] [[*][**][***]]
 ```
 
 \+ This workflow will automatically detect and add webpage url currently you're watching as an action to open the webpage.
@@ -18,7 +18,7 @@ based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/t
 
 webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/fallroot/copy-url-for-alfred)
 
-[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-1.alfredworkflow) and any suggestions/pull requests will be appreciated
+[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-2.alfredworkflow) and any suggestions/pull requests will be appreciated
 
 - [x] ~~only single tag is accepted; working on it~~
 - [x] ~~priority~~

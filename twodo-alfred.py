@@ -81,7 +81,7 @@ def addtask(txt):
 
 		if year_not_in:
 			year = cur_yr
-			if month < cur_mon:
+			if int(month) < cur_mon:
 				year += 1
 
 		if weekday_in:
