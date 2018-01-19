@@ -18,7 +18,7 @@ based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/t
 
 webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/fallroot/copy-url-for-alfred)
 
-[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-2.alfredworkflow) and any suggestions/pull requests will be appreciated
+[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-3.alfredworkflow) and any suggestions/pull requests will be appreciated
 
 - [x] ~~only single tag is accepted; working on it~~
 - [x] ~~priority~~
@@ -26,16 +26,4 @@ webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/
 
 ------
 
-2Do에서 자연어 입력을 모방해보았습니다.
-
-사용법
-
-```
-2d event [[today][tomorrow] on [11][feb 11][11 feb 2018][wed][wednesday]] [at [9][9:30][pm]] [@[list]] [#[tag]] [[*][**][***]]
-```
-
-\+ 이 워크플로우는 현재 보고 있는 웹페이지의 주소를 액션으로 포함시킵니다.
-
-단점: 사용자의 입력을 분석하고 의도를 파악하는데 약간의 시간이 필요합니다. 명령어를 입력하고 **약 1초 후에 엔터를 누르시는 걸** 추천합니다. 현재 이 문제를 해결하기 위한 방도를 모색하고 있습니다.
-
-어떠한 조언/풀리퀘도 감사히 받겠습니다.
+한국어 사용자는 따로 좀 더 상세하게 [적어두었습니다](https://canor.cf/2018/01/19/alfred-2do/)
