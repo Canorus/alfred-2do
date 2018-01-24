@@ -85,7 +85,7 @@ def addtask(txt):
 				year += 1
 
 		if weekday_in:
-			d = tdatewd
+			d = str(tdatewd)
 			if tdatewd < cur_day:
 				d = str(int(d) - cur_day + 7)
 		else:
