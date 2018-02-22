@@ -85,9 +85,10 @@ def addtask(txt):
 				year += 1
 
 		if weekday_in:
-			d = str(tdatewd)
 			if tdatewd < cur_day:
 				d = str(int(d) - cur_day + 7)
+			else:
+				d = str(tdatewd - cur_day)
 		else:
 			d = str(year)+"-"+str(month)+"-"+tdate
 	else:
@@ -143,7 +144,7 @@ def addtask(txt):
 		if currentTabUrl == "browser not in front":
 			url = ""
 	except:
-		pass
+		url=""
 
 	# priority
 	if '***' in pre_dat:
