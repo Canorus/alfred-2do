@@ -23,7 +23,7 @@ webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/
 <<<<<<< HEAD
 [try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-33.alfredworkflow) and any suggestions/pull requests will be appreciated
 =======
-[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-32.alfredworkflow) and any suggestions/pull requests will be appreciated
+[try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.0-34.alfredworkflow) and any suggestions/pull requests will be appreciated
 >>>>>>> a7c43ed7cea541f2aa1b296b0884ec5ae6b75082
 
 - [x] ~~only single tag is accepted; working on it~~
