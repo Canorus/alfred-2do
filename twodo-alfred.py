@@ -11,12 +11,13 @@ query = sys.argv[1]
 
 def addtask(txt):
 	pre_dat = re.split(' ',txt)
-	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*)',txt)
+	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web)',txt)
 
 	#event
 	e = spl[0]
 
 	# determine duedate
+
 	if 'today' in pre_dat:
 		d = str(0)
 	elif 'tomorrow' in pre_dat:
@@ -86,7 +87,7 @@ def addtask(txt):
 
 		if weekday_in:
 			if tdatewd < cur_day:
-				d = str(int(d) - cur_day + 7)
+				d = str(tdatewd - cur_day + 7)
 			else:
 				d = str(tdatewd - cur_day)
 		else:
@@ -139,10 +140,12 @@ def addtask(txt):
 
 	#if on webpage, automatically add webpage to url
 	try:
-		currentTabUrl = str(subprocess.check_output(['osascript','browser.scpt']))[2:-3]
-		url = "url:"+currentTabUrl
-		if currentTabUrl == "browser not in front":
-			url = ""
+		url = ""
+		if '-web' in pre_dat:
+			currentTabUrl = str(subprocess.check_output(['osascript','browser.scpt']))[2:-3]
+			url = "url:"+currentTabUrl
+			if currentTabUrl == "browser not in front":
+				url = ""
 	except:
 		url=""
 
