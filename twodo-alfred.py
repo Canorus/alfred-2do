@@ -4,8 +4,8 @@ import json
 import re
 from datetime import datetime
 import subprocess
+import urllib.parse
 #import parse
-#all parameters should've been url-encoded but seems work fine without it
 
 query = sys.argv[1]
 
@@ -14,10 +14,9 @@ def addtask(txt):
 	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web)',txt)
 
 	#event
-	e = spl[0]
+	e = urllib.parse.quote(spl[0])
 
 	# determine duedate
-
 	if 'today' in pre_dat:
 		d = str(0)
 	elif 'tomorrow' in pre_dat:
