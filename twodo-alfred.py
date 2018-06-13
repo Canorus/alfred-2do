@@ -29,24 +29,28 @@ def addtask(txt):
 	elif 'tomorrow' in pre_dat:
 		d = str(1)
 	elif ' on ' in spl: # on / 'jan' 1 / 1'/'1 / 29 // year should be decided automatically
+		nextweek = 0
 		dat = re.split(' ',spl[spl.index(' on ')+1].lower())
+
 		#print(dat)
+		for date in dat:
+			if date == 'next':
+				nextweek = 7
+
 		cur_day = datetime.now().weekday()
 		cur_dat = datetime.now().day
 		cur_mon = datetime.now().month
 		cur_yr = datetime.now().year
 		f_m = ['','january','february','march','april','may','june','july','august','september','october','november','december']
-		s_m = ['','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
 		f_w = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-		s_w = ['mon','tue','wed','thu','fri','sat','sun']
-		a_m = f_m + s_m
-		a_w = f_w + s_w
 		year_not_in = 1
 		weekday_in = 0
 		month_not_in = 1
 		tdate=""
+
 		### what if jan 1 is before than current date
 		for date in dat:
+			date = date.lower()
 			try:
 				year = re.search('\d\d\d\d',date).group()
 				year = int(year)
@@ -54,21 +58,27 @@ def addtask(txt):
 			except:
 				year = cur_yr
 
-			if date in a_m:
+			# auto-complete
+			for month in f_m:
+				if month.startswith(date):
+					date = month
+					break
+			for wday in f_w:
+				if wday.startswith(date):
+					date = wday
+					break
+
+			if date in f_m:
 				month_not_in = 0
-				if date in f_m:
-					month = f_m.index(date)
-				else:
-					month = s_m.index(date)
-			elif date in a_w:
+				month = f_m.index(date)
+
+			elif date in f_w:
 				weekday_in = 1
 				#disabling year and month
 				year_not_in = 0
 				month_not_in = 0
-				if date in f_w:
-					tdatewd = f_w.index(date)
-				else:
-					tdatewd = s_w.index(date)
+				tdatewd = f_w.index(date)
+
 			elif year_not_in:
 				dat2 = re.split('/', date)
 				if len(dat2) is 1:
@@ -95,7 +105,7 @@ def addtask(txt):
 			if tdatewd < cur_day:
 				d = str(tdatewd - cur_day + 7)
 			else:
-				d = str(tdatewd - cur_day)
+				d = str(tdatewd - cur_day + nextweek)
 		else:
 			d = str(year)+"-"+str(month)+"-"+tdate
 	else:

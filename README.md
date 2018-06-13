@@ -1,7 +1,7 @@
 # alfred-2do
 
 ## by hylo
-(1) List name partial matching
+### (1) List name partial matching
 
 ![Screenshot](screenshots/match_list1.png)
 ![Screenshot](screenshots/match_list2.png)
@@ -14,6 +14,13 @@ Currently, there is no way to retrieve list names from 2Do automatically.
 ```
 /usr/local/bin/python3 twodo-alfred.py "{query}" "Home, Wishilist, Study"
 ```
+
+### (2) next week
+
+```
+2d event ... on [wed][next wed][wednesday][next wednesday] ...
+```
+
 
 ## Original README
 Tried to mimic natural language to create a 2Do task.
