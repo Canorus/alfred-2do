@@ -9,12 +9,19 @@ import urllib.parse
 
 query = sys.argv[1]
 
+lists=[]
+if (len(sys.argv) > 2):
+	lists = re.split(',', sys.argv[2])
+
+	for i in range(len(lists)):
+		lists[i] = lists[i].strip()
+
 def addtask(txt):
 	pre_dat = re.split(' ',txt)
 	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web)',txt)
 
 	#event
-	e = urllib.parse.quote(spl[0])
+	e = spl[0]
 
 	# determine duedate
 	if 'today' in pre_dat:
@@ -121,8 +128,20 @@ def addtask(txt):
 		p = ""
 
 	# \@ makes list
+	matched_list = ""
 	if ' @' in spl:
 		l = spl[spl.index(' @')+1]
+		if len(l) > 0:
+			for ll in lists:
+				if ll.lower().startswith(l.lower()):
+					matched_list = " @" + ll
+
+			if len(matched_list) == 0:
+				for ll in lists:
+					if l.lower() in ll.lower():
+						matched_list = " @" + ll
+						break
+
 	else:
 		l = ""
 
@@ -159,12 +178,17 @@ def addtask(txt):
 		pr = 0
 	pr = str(pr)
 
+	# url encoding 
+	e = urllib.parse.quote(e)
+	l = urllib.parse.quote(l)
+	ta = urllib.parse.quote(ta)
+
 	baseurl = "twodo://x-callback-url/add?task=" +e+ "&forlist=" +l+ "&locations=" +p+ "&due=" +d+ "&dueTime=" +t+"&tags=" +ta+"&action="+url+"&priority="+pr
 
 	result = {"items": [
 	    {
 	        "title": "task",
-	        "subtitle": "Create new task with given data",
+	        "subtitle": "Create new task with given data" + matched_list,
 	        "arg": baseurl,
 			"icon": {
 				"path":"icons/Normal.png"
@@ -172,7 +196,7 @@ def addtask(txt):
 	    },
 	    {
 	        "title": "project",
-	        "subtitle": "Create new project with given data",
+	        "subtitle": "Create new project with given data" + matched_list,
 	        "arg": baseurl + "&type=1",
 			"icon": {
 				"path":"icons/Project.png"
@@ -180,7 +204,7 @@ def addtask(txt):
 	    },
 	    {
 	        "title": "checklist",
-	        "subtitle": "Create new checklist with given data",
+	        "subtitle": "Create new checklist with given data" + matched_list,
 	        "arg": baseurl + "&type=2",
 			"icon": {
 				"path":"icons/Checklists.png"
