@@ -8,11 +8,14 @@
 
 If you manually enter your list names created in 2Do into Alfred's workflow page, it will try to match your partially typed list.
 
+Currently, there is no way to retrieve list names from 2Do automatically.
+
+
 ```
 /usr/local/bin/python3 twodo-alfred.py "{query}" "Home, Wishilist, Study"
 ```
 
-## Originaal README
+## Original README
 Tried to mimic natural language to create a 2Do task.
 
 USAGE:
