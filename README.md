@@ -21,6 +21,9 @@ Currently, there is no way to retrieve list names from 2Do automatically.
 2d event ... on [wed][next wed][wednesday][next wednesday] ...
 ```
 
+### (3) on-the-fly review of input
+
+![Screenshot](screenshots/on-the-fly_input.png)
 
 ## Original README
 Tried to mimic natural language to create a 2Do task.

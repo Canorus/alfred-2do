@@ -7,16 +7,27 @@ import subprocess
 import urllib.parse
 #import parse
 
+## global vars
+g_lists = []
+g_str_date = ""
+g_str_time = ""
+g_list_name = ""
+
 query = sys.argv[1]
 
-lists=[]
 if (len(sys.argv) > 2):
-	lists = re.split(',', sys.argv[2])
+	g_lists = re.split(',', sys.argv[2])
 
-	for i in range(len(lists)):
-		lists[i] = lists[i].strip()
+	for i in range(len(g_lists)):
+		g_lists[i] = g_lists[i].strip()
+
 
 def addtask(txt):
+	global g_lists
+	global g_str_date
+	global g_str_time
+	global g_list_name
+
 	pre_dat = re.split(' ',txt)
 	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web)',txt)
 
@@ -106,8 +117,10 @@ def addtask(txt):
 				d = str(tdatewd - cur_day + 7)
 			else:
 				d = str(tdatewd - cur_day + nextweek)
+			g_str_date = " in " + d + " days"
 		else:
 			d = str(year)+"-"+str(month)+"-"+tdate
+			g_str_date = " on " + d
 	else:
 		d = ""
 
@@ -130,6 +143,8 @@ def addtask(txt):
 			d = str(0)
 	else:
 		t = ""
+	if len(t) > 0:
+		g_str_time = " at " + t
 
 	# in makes location
 	if ' in ' in spl:
@@ -138,18 +153,17 @@ def addtask(txt):
 		p = ""
 
 	# \@ makes list
-	matched_list = ""
 	if ' @' in spl:
 		l = spl[spl.index(' @')+1]
 		if len(l) > 0:
-			for ll in lists:
+			for ll in g_lists:
 				if ll.lower().startswith(l.lower()):
-					matched_list = " @" + ll
+					g_list_name = " @" + ll
 
-			if len(matched_list) == 0:
-				for ll in lists:
+			if len(g_list_name) == 0:
+				for ll in g_lists:
 					if l.lower() in ll.lower():
-						matched_list = " @" + ll
+						g_list_name = " @" + ll
 						break
 
 	else:
@@ -198,7 +212,7 @@ def addtask(txt):
 	result = {"items": [
 	    {
 	        "title": "task",
-	        "subtitle": "Create new task with given data" + matched_list,
+	        "subtitle": "Create new task with given data" + g_str_date + g_str_time + g_list_name,
 	        "arg": baseurl,
 			"icon": {
 				"path":"icons/Normal.png"
@@ -206,7 +220,7 @@ def addtask(txt):
 	    },
 	    {
 	        "title": "project",
-	        "subtitle": "Create new project with given data" + matched_list,
+	        "subtitle": "Create new project with given data" + g_str_date + g_str_time + g_list_name,
 	        "arg": baseurl + "&type=1",
 			"icon": {
 				"path":"icons/Project.png"
@@ -214,7 +228,7 @@ def addtask(txt):
 	    },
 	    {
 	        "title": "checklist",
-	        "subtitle": "Create new checklist with given data" + matched_list,
+	        "subtitle": "Create new checklist with given data" + g_str_date + g_str_time + g_list_name,
 	        "arg": baseurl + "&type=2",
 			"icon": {
 				"path":"icons/Checklists.png"
