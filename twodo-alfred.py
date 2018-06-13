@@ -159,11 +159,14 @@ def addtask(txt):
 			for ll in g_lists:
 				if ll.lower().startswith(l.lower()):
 					g_list_name = " @" + ll
+					l = ll
+					break
 
 			if len(g_list_name) == 0:
 				for ll in g_lists:
 					if l.lower() in ll.lower():
 						g_list_name = " @" + ll
+						l = ll
 						break
 
 	else:
