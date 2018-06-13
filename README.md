@@ -16,7 +16,7 @@ Many thanks to Fahad G. for providing icons :D Black icons are also included in 
 
 Also big shout out to [@doomsheart](https://github.com/doomsheart) reviewing the whole code for me.
 
-Massive shout out to [@hylo](https://github.com/hylo926) for contribution.
+Massive shout out to [@hylo926](https://github.com/hylo926) for contribution.
 
 based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/topic/3811-2do-workflow/?do=findComment&comment=22721)
 
