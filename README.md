@@ -12,7 +12,7 @@ USAGE:
 2d event [[today][tomorrow] on [11][feb 11][11 feb 2018][wed][wednesday][2/11]] [at [9][9:30][pm]] [@[list]] [#[tag]] [[*][**][***]] [-web]
 ```
 
-\+ ~~This workflow will automatically detect and add webpage url currently you're watching as an action to open the webpage.~~ You can choose whether to add web page or not by adding `-web` flag.
+\+ ~~This workflow will automatically detect and add webpage url currently you're watching as an action to open the webpage.~~ You can choose whether or not to add web page or not by adding `-web` flag.
 
 ~~caveat: It takes bit of time for this script to dissect your input and understand your intention. So it is recommended you **pause 1 second before pressing return key** to create a new task. I'm looking for ways to solve this issue.~~ Solved by v 1.1
 
