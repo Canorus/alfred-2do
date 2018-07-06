@@ -1,21 +1,24 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python
 import sys
 import json
 import re
 from datetime import datetime
 import subprocess
+import time
 import urllib.parse
+#all parameters should've been url-encoded but seems work fine without it
 
 query = sys.argv[1]
-
+#time.sleep(0.5)
 def addtask(txt):
 	pre_dat = re.split(' ',txt)
-	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\u0023| \*| -check| -proj)',txt) # modify here if you want different keyword for type
+	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web| \-proj| \-check)',txt) #modify here for different types of assignment
 
 	#event
 	e = spl[0]
 
 	# determine duedate
+
 	if 'today' in pre_dat:
 		d = str(0)
 	elif 'tomorrow' in pre_dat:
@@ -54,6 +57,9 @@ def addtask(txt):
 					month = s_m.index(date)
 			elif date in a_w:
 				weekday_in = 1
+				#disabling year and month
+				year_not_in = 0
+				month_not_in = 0
 				if date in f_w:
 					tdatewd = f_w.index(date)
 				else:
@@ -67,11 +73,6 @@ def addtask(txt):
 					tdate = dat2[1]
 				month_not_in = 0
 
-		if year_not_in:
-			year = cur_yr
-			if month < cur_mon:
-				year += 1
-
 		if month_not_in:
 			month = cur_mon
 			if tdate < cur_dat:
@@ -80,10 +81,16 @@ def addtask(txt):
 					year += 1
 					month -= 12
 
+		if year_not_in:
+			year = cur_yr
+			if int(month) < cur_mon:
+				year += 1
+
 		if weekday_in:
-			d = tdatewd
 			if tdatewd < cur_day:
-				d = str(int(d) - cur_day + 7)
+				d = str(tdatewd - cur_day + 7)
+			else:
+				d = str(tdatewd - cur_day)
 		else:
 			d = str(year)+"-"+str(month)+"-"+tdate
 	else:
@@ -123,18 +130,25 @@ def addtask(txt):
 
 	# \# makes tag
 	if ' \u0023' in spl:
-		ta = spl[spl.index(' \u0023')+1]
+		ta = ""
+		count_sharp = [i for i, x in enumerate(spl) if x == " #"]
+		for i, x in enumerate(count_sharp):
+			ta += str(spl[count_sharp[i]+1])
+			ta += ","
+		ta = ta[:-1]
 	else:
 		ta = ""
 
 	#if on webpage, automatically add webpage to url
 	try:
-		currentTabUrl = str(subprocess.check_output(['osascript','browser.scpt']))[2:-3]
-		url = "url:"+currentTabUrl
-		if currentTabUrl == "browser not in front":
-			url = ""
+		url = ""
+		if '-web' in pre_dat:
+			currentTabUrl = str(subprocess.check_output(['osascript','browser.scpt']))[2:-3]
+			url = "url:"+currentTabUrl
+			if currentTabUrl == "browser not in front":
+				url = ""
 	except:
-		pass
+		url=""
 
 	# priority
 	if '***' in pre_dat:
@@ -159,15 +173,13 @@ def addtask(txt):
 	except:
 		pass
 	
-	baseurl = "twodo://x-callback-url/add?task=" +e+ "&forlist=" +l+ "&locations=" +p+ "&due=" +d+ "&dueTime=" +t+"&tags=" +ta+"&action="+url+"&priority="+pr
+	baseurl = "twodo://x-callback-url/add?task="+e+"&forlist="+l+"&locations="+p+"&due="+d+"&dueTime="+t+"&tags="+ta+"&action="+url+"&priority="+pr
 
 	if '-proj' in pre_dat:
-		result = baseurl + "&type=1"
+		print(baseurl+'&type=1')
 	elif '-check' in pre_dat:
-		result = baseurl + "&type=2"
+		print(baseurl+'&type=2')
 	else:
-		result= baseurl + "&type=0"
-
-	print(result)
+		print(baseurl+'&type=0')
 
 addtask(query)
