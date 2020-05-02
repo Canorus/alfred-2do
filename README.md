@@ -24,7 +24,7 @@ Multiple hashtags can be attached.
 
 Importance can be applied with 1~3 of asterisks.
 
-\+ ~~This workflow will automatically detect and add webpage url currently you're watching as an action to open the webpage.~~ You can choose whether or not to add web page or not by adding `-web` flag. **Only works with Safari and Chrome. Does not work with Firefox browser.**
+\+ ~~This workflow will automatically detect and add webpage url currently you're watching as an action to open the webpage.~~ You can choose whether or not to add web page or not by adding `-web` flag. **Only works with Safari and Chrome. Does not work with Firefox browser.** [why](https://github.com/Canorus/alfred-2do/issues/3)
 
 Event type can also be `project` or `checklist`. Apply with keyword `-proj` or `-check`.
 
