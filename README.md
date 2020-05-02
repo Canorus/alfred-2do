@@ -42,7 +42,7 @@ based on the work of [2Do Workflow by Caleb Grove](https://www.alfredforum.com/t
 
 webpage detection code from [fallroot's copy-url-for-alfred](https://github.com/fallroot/copy-url-for-alfred)
 
-[you can try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_1.1.alfredworkflow) and any suggestions/pull requests will be appreciated
+[you can try at your own risk](https://github.com/Canorus/alfred-2do/raw/master/workflow/alfred-2Do_2.0.alfredworkflow) and any suggestions/pull requests will be appreciated
 
 - [x] ~~only single tag is accepted; working on it~~
 - [x] ~~priority~~
