@@ -3,14 +3,65 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.calebgrove.2do</string>
+	<string>me.canor.alfred2do</string>
+	<key>category</key>
+	<string>Productivity</string>
 	<key>connections</key>
 	<dict>
-		<key>BCEC1569-9AE5-4001-8649-EE722420A2C7</key>
+		<key>53D3672E-0F6E-4CE9-8713-7ED6B9EE477F</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>3E2EE640-7744-4AD6-B17E-6E79AAC4373A</string>
+				<string>D1C4FCA6-5C0D-404E-BF9C-EB6561A58533</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>988C725F-213D-4067-9520-74A1C6913994</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A0D0F985-AF92-47A3-9F2E-5A20C797F7DF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>A0D0F985-AF92-47A3-9F2E-5A20C797F7DF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>137F6040-8945-4ED3-9B42-2D3705EB2C71</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>4921B5CD-9BFA-4D43-BA95-2031478F2E14</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>D1C4FCA6-5C0D-404E-BF9C-EB6561A58533</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A0D0F985-AF92-47A3-9F2E-5A20C797F7DF</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -21,15 +72,67 @@
 		</array>
 	</dict>
 	<key>createdby</key>
-	<string>Caleb Grove (@sircalebgrove)</string>
+	<string>Canor (@psCanor)</string>
 	<key>description</key>
 	<string>Create Tasks in 2Do</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>2Do</string>
+	<string>alfred-2Do</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>64</integer>
+				<key>script</key>
+				<string>on run
+	set q to "{query}"
+	tell application "System Events"
+		open location q
+	end tell
+	set t to item -2 of q as text
+	log t
+	if t is equal to "2" then
+		return "Created checklist"
+	else if t is equal to "1"	then
+		return "Created project"
+	else 
+		return "Created task"
+	end if
+end run</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A0D0F985-AF92-47A3-9F2E-5A20C797F7DF</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>soundname</key>
+				<string>Submarine</string>
+				<key>systemsound</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.playsound</string>
+			<key>uid</key>
+			<string>137F6040-8945-4ED3-9B42-2D3705EB2C71</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -37,6 +140,8 @@
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -44,7 +149,7 @@
 				<key>escaping</key>
 				<integer>64</integer>
 				<key>keyword</key>
-				<string>2d</string>
+				<string>2dt</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -73,9 +178,9 @@
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>BCEC1569-9AE5-4001-8649-EE722420A2C7</string>
+			<string>988C725F-213D-4067-9520-74A1C6913994</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -83,46 +188,118 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>68</integer>
+				<integer>64</integer>
 				<key>script</key>
-				<string>tell application "System Events"
-	open location "{query}"
-end tell</string>
+				<string>/usr/local/bin/python3 twodo-alfred.py "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
-				<integer>6</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>3E2EE640-7744-4AD6-B17E-6E79AAC4373A</string>
+			<string>D1C4FCA6-5C0D-404E-BF9C-EB6561A58533</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>2d</string>
+				<key>subtext</key>
+				<string>event on [date] at [time] in [place] @[list]</string>
+				<key>text</key>
+				<string>Create 2do Task beta</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>53D3672E-0F6E-4CE9-8713-7ED6B9EE477F</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>New item added to your list</string>
+				<key>title</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>4921B5CD-9BFA-4D43-BA95-2031478F2E14</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>a 2Do workflow trying to mimic natural language input. refer to github https://github.com/Canorus/alfred-2do</string>
 	<key>uidata</key>
 	<dict>
-		<key>3E2EE640-7744-4AD6-B17E-6E79AAC4373A</key>
+		<key>137F6040-8945-4ED3-9B42-2D3705EB2C71</key>
 		<dict>
 			<key>xpos</key>
-			<integer>530</integer>
+			<integer>730</integer>
 			<key>ypos</key>
-			<integer>200</integer>
+			<integer>110</integer>
 		</dict>
-		<key>BCEC1569-9AE5-4001-8649-EE722420A2C7</key>
+		<key>4921B5CD-9BFA-4D43-BA95-2031478F2E14</key>
 		<dict>
 			<key>xpos</key>
-			<integer>140</integer>
+			<integer>730</integer>
 			<key>ypos</key>
-			<integer>200</integer>
+			<integer>260</integer>
+		</dict>
+		<key>53D3672E-0F6E-4CE9-8713-7ED6B9EE477F</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>260</integer>
+		</dict>
+		<key>988C725F-213D-4067-9520-74A1C6913994</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>110</integer>
+		</dict>
+		<key>A0D0F985-AF92-47A3-9F2E-5A20C797F7DF</key>
+		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
+			<key>ypos</key>
+			<integer>110</integer>
+		</dict>
+		<key>D1C4FCA6-5C0D-404E-BF9C-EB6561A58533</key>
+		<dict>
+			<key>xpos</key>
+			<integer>280</integer>
+			<key>ypos</key>
+			<integer>260</integer>
 		</dict>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>2.0</string>
 	<key>webaddress</key>
-	<string>calebgrove.com</string>
+	<string>blog.canor.kr</string>
 </dict>
 </plist>

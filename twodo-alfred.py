@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/local/python3
 import sys
 import json
 import re
@@ -6,180 +6,240 @@ from datetime import datetime
 import subprocess
 import time
 import urllib.parse
-#all parameters should've been url-encoded but seems work fine without it
+from logg import *
+# all parameters should've been url-encoded but seems working fine without it
 
-query = sys.argv[1]
-#time.sleep(0.5)
-def addtask(txt):
-	pre_dat = re.split(' ',txt)
-	spl = re.split('( on | in | at |today|tomorrow|\s@|\s\#| \*| \-web| \-proj| \-check)',txt) #modify here for different types of assignment
+def check_date_format(t :str) -> bool:
+    regex = re.compile('^(0?[1-9]|[12]\d|3[01])(\/(0?[1-9]|1[0-2])(\/(\d{2})?\d{2})?)?$')
+    if re.search(regex, t):
+        return True
+    else:
+        return False
 
-	#event
-	e = spl[0]
+def parse_date(tp :str) -> tuple:
+    if check_date_format(tp):
+        #return tp
+        ts = list(map(int, tp.split('/')))
+        if len(ts) > 2: # more than 2 elements
+            if ts[2] > 2000:
+                d = datetime(ts[2], ts[1], ts[0])
+            else:
+                d = datetime(2000+ ts[2], ts[1], ts[0])
+        elif len(ts) == 2:
+            cur_year = datetime.now().year
+            d = datetime(cur_year, ts[1], ts[0])
+        else:
+            d = datetime.now()
+            cur_day = d.day
+            cur_year = d.year
+            if ts[0] < cur_day:
+                cur_month = d.month + 1
+            else:
+                cur_month = d.month
+            d = datetime(cur_year, cur_month, ts[0])
+        return d
 
-	# determine duedate
+def cal_date(tp :str) -> int:
+    tar_date = parse_date(tp)
+    dn = datetime.now()
+    cur_date = datetime(dn.year, dn.month, dn.day)
+    return (tar_date - cur_date).days
 
-	if 'today' in pre_dat:
-		d = str(0)
-	elif 'tomorrow' in pre_dat:
-		d = str(1)
-	elif ' on ' in spl: # on / 'jan' 1 / 1'/'1 / 29 // year should be decided automatically
-		dat = re.split(' ',spl[spl.index(' on ')+1].lower())
-		#print(dat)
-		cur_day = datetime.now().weekday()
-		cur_dat = datetime.now().day
-		cur_mon = datetime.now().month
-		cur_yr = datetime.now().year
-		f_m = ['','january','february','march','april','may','june','july','august','september','october','november','december']
-		s_m = ['','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
-		f_w = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-		s_w = ['mon','tue','wed','thu','fri','sat','sun']
-		a_m = f_m + s_m
-		a_w = f_w + s_w
-		year_not_in = 1
-		weekday_in = 0
-		month_not_in = 1
-		tdate=""
-		### what if jan 1 is before than current date
-		for date in dat:
-			try:
-				year = re.search('\d\d\d\d',date).group()
-				year = int(year)
-				year_not_in = 0
-			except:
-				year = cur_yr
+def check_time_format(t):
+    regex = re.compile('^[0-1]?[0-9](:[0-5]?[0-9])?(pm)?$')
+    if re.search(regex, t):
+        return True
+    else:
+        return False
 
-			if date in a_m:
-				month_not_in = 0
-				if date in f_m:
-					month = f_m.index(date)
-				else:
-					month = s_m.index(date)
-			elif date in a_w:
-				weekday_in = 1
-				#disabling year and month
-				year_not_in = 0
-				month_not_in = 0
-				if date in f_w:
-					tdatewd = f_w.index(date)
-				else:
-					tdatewd = s_w.index(date)
-			elif year_not_in:
-				dat2 = re.split('/', date)
-				if len(dat2) is 1:
-					tdate = date
-				else:
-					month = dat2[0]
-					tdate = dat2[1]
-				month_not_in = 0
+def cal_time(t :str):
+    if check_time_format(t):
+        if t.endswith('pm'):
+            return t.replace('pm', ' pm')
+        else:
+            return t
 
-		if month_not_in:
-			month = cur_mon
-			if tdate < cur_dat:
-				month += 1
-				if month > 12:
-					year += 1
-					month -= 12
+def check_weekday_format(t: str):
+    weekdays_sub = ['mon','tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+    weekdays_sup = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    t = t.lower()
+    if t in weekdays_sub or t in weekdays_sup or t == 'today' or t == 'tomorrow':
+        return True
+    else:
+        return False
 
-		if year_not_in:
-			year = cur_yr
-			if int(month) < cur_mon:
-				year += 1
+def cal_weekday(t :str) -> int:
+    dt = datetime.now()
+    current_weekday = dt.weekday()
+    if type(t) == str:
+        t = t.lower()
+        weekdays_sub = ['mon','tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+        weekdays_sup = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+        if t == 'today':
+            return 0
+        elif t == 'tomorrow':
+            return 1
+        elif t in weekdays_sub:
+            target_weekday = weekdays_sub.index(t)
+        elif t in weekdays_sup:
+            target_weekday = weekdays_sup.index(t)
+        else:
+            target_weekday = dt.weekday()
 
-		if weekday_in:
-			if tdatewd < cur_day:
-				d = str(tdatewd - cur_day + 7)
-			else:
-				d = str(tdatewd - cur_day)
-		else:
-			d = str(year)+"-"+str(month)+"-"+tdate
-	else:
-		d = ""
+        if target_weekday < current_weekday:
+            n = target_weekday - current_weekday + 7
+        else:
+            n = target_weekday - current_weekday
+    elif type(t) == int:
+        if t < dt.weekday():
+            n = t - current_weekday + 7 # day in index num
+        else:
+            n = t - current_weekday
+    else:
+        raise ValueError
+    return n
 
-	# at makes dueTime, default is 6
-	if ' at ' in spl:
-		t = spl[spl.index(' at ')+1]
-		t_s = re.split(' ',t)
-		if len(t_s)>1:
-			if 'pm' in t_s:
-				t_s.remove('pm')
-				colon = re.split(':',t_s[0])
-				n_t = int(colon[0])+12
-				try:
-					t = str(n_t)+":"+colon[1]
-				except:
-					t = str(n_t)+":00"
-		if ":" not in t:
-			t = t + ":00"
-		if d == "":
-			d = str(0)
-	else:
-		t = ""
+def parse_query(q):
+    d = dict()
+    d['args'] = list()
+    d['time'] = ''
+    d['priority'] = ''
+    d['forlist'] = ''
+    d['task'] = ''
+    d['locations'] = ''
+    d['due'] = ''
+    d['dueTime'] = ''
+    d['tags'] = list()
+    d['action'] = ''
+    d['start'] = None
+    d['action'] = ''
 
-	# in makes location
-	if ' in ' in spl:
-		p = spl[spl.index(' in ')+1]
-	else:
-		p = ""
+    # split
+    q_split = q.split(' ')
+    logger.debug(q_split)
+    # web detection
+    if '-web' in q_split:
+        try:
+            currentTabUrl = str(subprocess.check_output(['osascript', 'browser.scpt']))[2:-3]
+            url = "url:" + currentTabUrl
+            # if currentTabUrl == "browser not in front":
+            if currentTabUrl == 'You need a supported browser as your frontmost app':
+                url = ""
+        except:
+            url = ""
+        d['action'] = url
+        q_split[q_split.index('-web')] = ''
+    args = ['-proj', '-check']
+    for arg in args:
+        if arg in q_split:
+            try:
+                d['args'].append(arg)
+            except:
+                d['args'] = list()
+                d['args'].append(arg)
+            q_split.remove(arg)
+    # params = ['*', '**', '***', '@', '#']
+    for q_i in range(len(q_split)):
+        if re.search('^\*{1,3}$', q_split[q_i]):
+            logger.debug('importance detected')
+            d['priority'] = str(len(re.findall('\*', q_split[q_i])))
+            q_split[q_i] = ''
+        elif re.search('^@.*', q_split[q_i]):
+            logger.debug('list selection detected')
+            d['forlist'] = q_split[q_i].replace('@', '')
+            q_split[q_i] = ''
+        elif re.search('^\#.*', q_split[q_i]):
+            logger.debug('hashtag detected')
+            try:
+                d['tags'].append(q_split[q_i].replace('#',''))
+            except KeyError:
+                d['tags'] = list()
+                d['tags'].append(q_split[q_i].replace('#',''))
+            q_split[q_i] = ''
+    
+    pre = ['on', 'at', 'by', 'from', 'near']
+    for q_i in range(len(q_split)):
+        rem = 0
+        if q_split[q_i] in pre:
+            if q_split[q_i] == 'near':
+                d['locations'] = q_split[q_i + 1]
+                q_split[q_i] = ''
+                q_split[q_i + 1] = ''
+                rem = 1
+            elif q_split[q_i] == 'from':
+                start = q_split[q_i + 1]
+                if check_date_format(start):
+                    d['start'] = cal_date(start)
+                    rem = 1
+                elif check_weekday_format(start):
+                    d['start'] = cal_weekday(start)
+                    rem = 1
+                elif check_time_format(start):
+                    d['start'] = cal_time(start)
+                    rem = 1
+            else:
+                if check_date_format(q_split[q_i + 1]) or check_weekday_format(q_split[q_i + 1]) or check_time_format(q_split[q_i + 1]):
+                    tar = q_split[q_i + 1]
+                    if check_date_format(tar):
+                        d['due'] = cal_date(tar)
+                        rem = 1
+                    elif check_weekday_format(tar):
+                        d['due'] = cal_weekday(tar)
+                        rem = 1
+                    elif check_time_format(tar):
+                        d['dueTime'] = cal_time(tar)
+                        rem = 1
+            if rem:
+                q_split[q_i] = ''
+                q_split[q_i + 1] = ''
+    
+    if 'today' in q_split:
+        d['due'] = 0
+        q_split[q_split.index('today')] = ''
+    elif 'tomorrow' in q_split:
+        d['due'] = 1
+        q_split[q_split.index('tomorrow')] = ''
+    
+    if d['dueTime'] is not '' and d['due'] is '':
+        d['due'] = 0
 
-	# \@ makes list
-	if ' @' in spl:
-		l = spl[spl.index(' @')+1]
-	else:
-		l = ""
+    t = ' '.join(q_split).strip()
+    t = re.sub(' +', ' ', t)
+    return t, d
 
-	# \# makes tag
-	if ' \u0023' in spl:
-		ta = ""
-		count_sharp = [i for i, x in enumerate(spl) if x == " #"]
-		for i, x in enumerate(count_sharp):
-			ta += str(spl[count_sharp[i]+1])
-			ta += ","
-		ta = ta[:-1]
-	else:
-		ta = ""
 
-	#if on webpage, automatically add webpage to url
-	try:
-		url = ""
-		if '-web' in pre_dat:
-			currentTabUrl = str(subprocess.check_output(['osascript','browser.scpt']))[2:-3]
-			url = "url:"+currentTabUrl
-			if currentTabUrl == "browser not in front":
-				url = ""
-	except:
-		url=""
+def main():
+    query = sys.argv[1]
+    # time.sleep(0.5)
 
-	# priority
-	if '***' in pre_dat:
-		pr = 3
-	elif '**' in pre_dat:
-		pr = 2
-	elif '*' in pre_dat:
-		pr = 1
-	else:
-		pr = 0
-	pr = str(pr)
+    e, d = parse_query(query)
+    l = d['forlist']
+    p = d['locations']
+    da = d['due']
+    t = d['dueTime']
+    ta = ','.join(d['tags'])
+    url = d['action']
+    pr = d['priority']
+    start = d['start']
+    baseurl = "twodo://x-callback-url/add?task=" + e + \
+        "&forlist=" + l + \
+        "&locations=" + p + \
+        "&due=" + str(da) + \
+        "&dueTime=" + str(t) + \
+        "&tags=" + ta + \
+        "&action=" + url + \
+        "&priority=" + str(pr)
+        # "&start=" + str(start)
 
-	try:
-		#e = urllib.parse.quote(e)
-		l = urllib.parse.quote(l)
-		p = urllib.parse.quote(p)
-		d = urllib.parse.quote(d)
-		t = urllib.parse.quote(t)
-		ta = urllib.parse.quote(ta)
-		url = urllib.parse.quote(url)
-		pr = urllib.parse.quote(pr)
-	except:
-		pass
-	
-	baseurl = "twodo://x-callback-url/add?task="+e+"&forlist="+l+"&locations="+p+"&due="+d+"&dueTime="+t+"&tags="+ta+"&action="+url+"&priority="+pr
+    if start is not None:
+        baseurl += "&start=" + str(start)
+    
+    if '-proj' in d['args']:
+        print(baseurl+'&type=1')
+    elif '-check' in d['args']:
+        print(baseurl+'&type=2')
+    else:
+        print(baseurl+'&type=0')
 
-	if '-proj' in pre_dat:
-		print(baseurl+'&type=1')
-	elif '-check' in pre_dat:
-		print(baseurl+'&type=2')
-	else:
-		print(baseurl+'&type=0')
-
-addtask(query)
+if __name__ == '__main__':
+    main()
